@@ -1,24 +1,29 @@
 var express = require('express'),
-	bodyParser = require('body-parser'),
-	hbs = require('hbs'),
-	path = require('path'),
-	cors = require('cors'),
-	mongodb = require('mongodb'),
-	mongoose = require('mongoose'),
-	app = express(),
-	port = process.env.PORT || 8000;
+    bodyParser = require('body-parser'),
+    hbs = require('hbs'),
+    path = require('path'),
+    cors = require('cors'),
+    cookieParser = require('cookie-parser'),
+    errorHandler = require('errorhandler'),
+    mongodb = require('mongodb'),
+    mongoose = require('mongoose'),
+    port = process.env.PORT || 8000,
+    env = process.env.NODE_ENV || 'dev';
 
+
+var app = express();
 
 /**
- * MongoDB Setup
+ * MongoDB setup
  */
-var mongoUri = 'mongodb://localhost/poll';
-
-app.configure('production', function() {
+if (env === 'dev') {
+	mongoUri = 'mongodb://localhost/poll';
+} else {
 	mongoUri = process.env.MONGOLAB_URI;
-});
+}
 
 app.db = mongoose.connect(mongoUri);
+
 
 
 /**
@@ -28,24 +33,22 @@ app.use(bodyParser.urlencoded({
 	extended: false
 }));
 app.use(bodyParser.json());
+app.use(cookieParser());
 app.use(cors());
-app.use(express.cookieParser());
 
 app.set('views', __dirname + '/public');
 app.set('view engine', 'html');
 app.engine('html', hbs.__express);
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.configure('development', function() {
-	app.use(express.errorHandler());
-});
-
-app.configure('production', function() {
+if (env == 'dev') {
+	app.use(errorHandler());
+} else {
 	app.use(function(err, req, res, next) {
 		console.error(err);
 		res.send(500, 'Sorry, there\'s been an error!');
 	});
-});
+}
 
 
 /**
@@ -94,8 +97,8 @@ app.use(function(req, res, next) {
  */
 var server = app.listen(port, function() {
 	var host = server.address().address,
-		port = server.address().port;
-	console.log('Poll app listening at http://%s:%s', host, port);
+      port = server.address().port;
+	console.log('App listening at http://%s:%s', host, port);
 });
 
 
