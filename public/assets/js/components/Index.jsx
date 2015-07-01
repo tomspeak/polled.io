@@ -6,8 +6,9 @@ class App extends React.Component {
   render () {
     return (
       <div>
-        <h1>Polled</h1>
-        {this.props.children}
+        <PollTitle />
+        <TextInput />
+        <h1>WORKING</h1>
       </div>
     );
   }
