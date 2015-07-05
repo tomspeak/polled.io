@@ -1,0 +1,12 @@
+.poll-item__bar {
+  width: 0%;
+  height: 5px;
+  animation: animate-bar 1.25s 0s linear;
+  transition: width 1s linear;
+  background-color: red;
+  border-radius: 5px;
+}
+
+@keyframes animate-bar {
+  0% { width: 0%; }
+}

@@ -1,14 +1,14 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
-var ObjectId = Schema.ObjectId;
+const mongoose = require('mongoose'),
+      Schema = mongoose.Schema,
+      ObjectId = Schema.ObjectId
 
-var PollSchema = new Schema({
-	title: String,
-	choices: [{
-		choice: String,
-		votes: Number
-	}],
-	url: String
-});
+const PollSchema = new Schema({
+  title: String,
+  choices: [{
+    value: String,
+    votes: { type: Number, default: 0 }
+  }],
+  url: String
+})
 
-module.exports = mongoose.model('Poll', PollSchema);
+module.exports = mongoose.model('Poll', PollSchema)

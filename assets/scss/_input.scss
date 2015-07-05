@@ -1,0 +1,70 @@
+.input {
+  position: relative;
+}
+
+.input__text {
+  width: 100%;
+  max-width: 100%;
+  display: block;
+  padding: 12px 34px 12px 12px;
+  margin-bottom: 24px;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 3px;
+  box-shadow: 0 2px 1px 0 rgba(0,0,0,.2);
+  color: #FFFFFF;
+  background-image: linear-gradient(to top,rgba(255,255,255,.05),rgba(255,255,255,.1) 90%);
+  -webkit-appearance: none;
+  background-color: transparent;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+    &:focus {
+      outline: 0;
+      background-image: linear-gradient(to top,rgba(255,255,255,.25),rgba(255,255,255,.15) 90%)
+    }
+}
+
+
+.input__text--title {
+  margin-bottom: 48px;
+  padding: 12px;
+  background: 0 0;
+  border: none;
+  box-shadow: none;
+  border-bottom: 2px solid #fff;
+  border-radius: 0;
+  text-align: center;
+  font-size: 30px;
+
+    &:focus {
+      background-image: initial;
+    }
+}
+
+.input__action {
+  position: absolute;
+  top: 50%;
+  right: -16px;
+  transform: translate(-50%, -50%);
+  padding: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  color: #FFFFFF;
+}
+
+::-webkit-input-placeholder {
+  color: rgba(255,255,255,.7)
+}
+
+:-moz-placeholder {
+  color: rgba(255,255,255,.7)
+}
+
+::-moz-placeholder {
+  color: rgba(255,255,255,.7)
+}
+
+:-ms-input-placeholder {
+  color: rgba(255,255,255,.7)
+}

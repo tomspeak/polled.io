@@ -1,4 +1,4 @@
-var express = require('express'),
+let express = require('express'),
     bodyParser = require('body-parser'),
     hbs = require('hbs'),
     path = require('path'),
@@ -11,15 +11,16 @@ var express = require('express'),
     env = process.env.NODE_ENV || 'dev';
 
 
-var app = express();
+let app = express();
+let mongoUri = '';
 
 /**
  * MongoDB setup
  */
 if (env === 'dev') {
-	mongoUri = 'mongodb://localhost/poll';
+  mongoUri = 'mongodb://localhost/poll';
 } else {
-	mongoUri = process.env.MONGOLAB_URI;
+  mongoUri = process.env.MONGOLAB_URI;
 }
 
 app.db = mongoose.connect(mongoUri);
@@ -30,7 +31,7 @@ app.db = mongoose.connect(mongoUri);
  * App Config Setup
  */
 app.use(bodyParser.urlencoded({
-	extended: false
+  extended: false
 }));
 app.use(bodyParser.json());
 app.use(cookieParser());
@@ -42,21 +43,21 @@ app.engine('html', hbs.__express);
 app.use(express.static(path.join(__dirname, 'public')));
 
 if (env == 'dev') {
-	app.use(errorHandler());
+  app.use(errorHandler());
 } else {
-	app.use(function(err, req, res, next) {
-		console.error(err);
-		res.send(500, 'Sorry, there\'s been an error!');
-	});
+  app.use(function(err, req, res, next) {
+    console.error(err);
+    res.send(500, 'Sorry, there\'s been an error!');
+  });
 }
 
 
 /**
  * Routes
  */
-var routes = {
-	index: require('./routes/index.js'),
-	poll: require('./routes/poll.js'),
+let routes = {
+  index: require('./routes/index.js'),
+  poll: require('./routes/poll.js'),
 };
 
 /**
@@ -67,45 +68,45 @@ var routes = {
 app.get('/api/poll/:url', routes.poll.getPoll);
 app.post('/api/poll', routes.poll.createPoll);
 app.put('/api/poll/:url/vote', function(req, res, next) {
-	routes.poll.vote(req, res, function(poll) {
-		io.sockets.in(req.headers.referer).emit('voted', poll);
-	});
+  routes.poll.vote(req, res, function(poll) {
+    io.sockets.in(req.headers.referer).emit('voted', poll);
+  });
 });
 
 //Direct all normal traffic to / and allow backbone to dictate navigation.
 app.use(function(req, res, next) {
-	return res.render('index');
+  return res.render('index');
 });
 
 //404
 app.use(function(req, res, next) {
-	res.status(404);
+  res.status(404);
 
-	if (req.accepts('html')) {
-		res.render('404', {
-			url: req.url
-		});
-		return;
-	}
+  if (req.accepts('html')) {
+    res.render('404', {
+      url: req.url
+    });
+    return;
+  }
 
-	res.type('txt').send('Not found');
+  res.type('txt').send('Not found');
 });
 
 
 /**
  * Server setup
  */
-var server = app.listen(port, function() {
-	var host = server.address().address,
-      port = server.address().port;
-	console.log('App listening at http://%s:%s', host, port);
+let server = app.listen(port, function() {
+  let host = server.address().address,
+  port = server.address().port;
+  console.log('App listening at http://%s:%s', host, port);
 });
 
 
 /**
  * Socket IO setup
  */
-var io = require('socket.io')(server);
+let io = require('socket.io')(server);
 
 /**
  * The sockets are set up so when a user connects, they join a socket.io 'room' of their requested URL.
@@ -117,9 +118,9 @@ var io = require('socket.io')(server);
  * same web page.
  */
 io.sockets.on('connection', function(socket) {
-	socket.join(socket.handshake.headers.referer);
+  socket.join(socket.handshake.headers.referer);
 
-	socket.on('disconnect', function() {
-		socket.leave(socket.handshake.headers.referer);
-	});
+  socket.on('disconnect', function() {
+    socket.leave(socket.handshake.headers.referer);
+  });
 });

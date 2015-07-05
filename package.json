@@ -1,7 +1,7 @@
 {
   "name": "polled.io",
   "version": "2.0.0",
-  "description": "Live polling website",
+  "description": "Live polling web-app",
   "main": "app.js",
   "dependencies": {
     "body-parser": "^1.12.0",
@@ -19,18 +19,32 @@
     "socket.io-client": "^1.2.0"
   },
   "devDependencies": {
+    "axios": "^0.5.4",
+    "babel-eslint": "^3.1.23",
     "babelify": "^6.1.2",
+    "eslint": "^0.24.0",
+    "eslint-plugin-react": "^2.6.4",
     "flux": "^2.0.3",
+    "inuit-box-sizing": "^0.2.0",
+    "inuit-normalize": "^3.0.3",
+    "inuit-reset": "^0.1.1",
+    "jasmine": "^2.3.1",
+    "karma": "^0.12.37",
+    "key-mirror": "^1.0.0",
     "livereload": "^0.3.7",
     "lodash": "^3.10.0",
-    "react": "^0.13.3",
+    "object-assign": "^3.0.0",
+    "react": "^0.14.0-beta1",
+    "react-dom": "^0.14.0-beta1",
     "react-router": "^1.0.0-beta3",
     "watchify": "^3.2.3"
   },
   "scripts": {
-    "watch": "watchify -t babelify public/assets/js/app.js --o public/dist/js/bundle.js & sass --watch public/assets/scss/main.scss:public/dist/css/bundle.css",
-    "build": "browserify public/assets/js/app.js -t babelify -o public/dist/js/bundle.js"
+    "watch": "watchify -t [ babelify --stage 0 ] assets/js/app.js --o public/dist/js/bundle.js & sass --watch assets/scss/main.scss:public/dist/css/bundle.css",
+    "build": "browserify assets/js/app.js -t [ babelify --stage 0 ] -o public/dist/js/bundle.js",
+    "lint": "./node_modules/.bin/eslint routes models assets/js/ assets/js/components/"
   },
+  "parser": "babel-eslint",
   "repository": {
     "type": "git",
     "url": "https://github.com/TomSpeak/polled.io.git"
