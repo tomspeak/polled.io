@@ -1,39 +1,26 @@
 import ChoiceConstants from '../constants/ChoiceConstants'
-import Dispatcher from '../dispatcher/AppDispatcher'
+import { dispatch } from '../dispatcher'
 
 
 const ChoiceActions = {
   init () {
-    Dispatcher.dispatch({
-      actionType: ChoiceConstants.INIT_CHOICES
-    })
+    dispatch(ChoiceConstants.INIT_CHOICES)
   },
 
   add () {
-    Dispatcher.dispatch({
-      actionType: ChoiceConstants.ADD_CHOICE
-    })
+    dispatch(ChoiceConstants.ADD_CHOICE)
   },
 
   remove (index) {
-    Dispatcher.dispatch({
-      actionType: ChoiceConstants.REMOVE_CHOICE,
-      index
-    })
+    dispatch(ChoiceConstants.REMOVE_CHOICE)
   },
 
   getChoices () {
-    Dispatcher.dispatch({
-      actionType: ChoiceConstants.GET_CHOICES
-    })
+    dispatch(ChoiceConstants.GET_CHOICES)
   },
 
   updateValue (index, value) {
-    Dispatcher.dispatch({
-      actionType: ChoiceConstants.UPDATE_VALUE,
-      index,
-      value
-    })
+    dispatch(ChoiceConstants.UPDATE_VALUE, { index, value })
   }
 }
 

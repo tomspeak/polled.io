@@ -1,57 +1,42 @@
-import Dispatcher from '../dispatcher/AppDispatcher'
+import { dispatch, dispatchAsync } from '../dispatcher'
 import PollConstants from '../constants/PollConstants'
+import _ from 'lodash'
+import Axios from 'axios'
 
+const addPoll = (title, choices) => {
+  _.remove(choices, (choice, key) => {
+    return !choice.value
+  })
+
+  return Axios.post('/api/poll', {
+    title,
+    choices
+  })
+}
 
 const PollActions = {
-  add (title, choices, component) {
-    Dispatcher.dispatch({
-      actionType: PollConstants.POLL_ADD,
-      title,
-      choices,
-      component
-    })
-  },
-
-  addSuccess (response, component) {
-    Dispatcher.dispatch({
-      actionType: PollConstants.POLL_ADD_SUCCESS,
-      response,
-      component
-    })
-  },
-
-  addError (response) {
-    Dispatcher.dispatch({
-      actionType: PollConstants.POLL_ADD_ERROR,
-      response
-    })
+  add (title, choices, router) {
+    dispatchAsync(addPoll(title, choices), {
+      request: PollConstants.POLL_ADD,
+      success: PollConstants.POLL_ADD_SUCCESS,
+      failure: PollConstants.POLL_ADD_ERROR
+    }, { title, choices, router })
   },
 
   get () {
-    Dispatcher.dispatch({
-      actionType: PollConstants.POLL_GET
-    })
+    dispatch(PollConstants.POLL_GET)
   },
 
   getById (id) {
-    Dispatcher.dispatch({
-      actionType: PollConstants.POLL_GET_BY_ID,
-      id
-    })
+    dispatch(PollConstants.POLL_GET_BY_ID, { id })
   },
 
   voteById (id) {
-    Dispatcher.dispatch({
-      actionType: PollConstants.POLL_VOTE,
-      id
-    })
+    dispatch(PollConstants.POLL_VOTE, { id })
   },
 
   updateTitle (value) {
-    Dispatcher.dispatch({
-      actionType: PollConstants.POLL_UPDATE_TITLE,
-      value
-    })
+    dispatch(PollConstants.POLL_UPDATE_TITLE, { value })
   }
 }
 

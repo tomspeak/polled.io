@@ -4,8 +4,8 @@ import Assign from 'object-assign'
 import _ from 'lodash'
 
 import ChoiceConstants from '../constants/ChoiceConstants'
-import Dispatcher from '../dispatcher/AppDispatcher'
 
+import { registerActions } from '../utils/storeutils'
 
 const CHANGE_EVENT = 'change'
 
@@ -61,30 +61,26 @@ const ChoiceStore = Assign({}, EventEmitter.prototype, {
 })
 
 
-Dispatcher.register ((action) => {
-  switch (action.actionType) {
-    case ChoiceConstants.INIT_CHOICES:
-      ChoiceStore.emitChange()
-      break
+registerActions ({
+  [ChoiceConstants.INIT_CHOICES]: () => {
+    ChoiceStore.emitChange()
+  },
 
-    case ChoiceConstants.ADD_CHOICE:
-      add()
-      break
+  [ChoiceConstants.ADD_CHOICE]: () => {
+    add()
+  },
 
-    case ChoiceConstants.REMOVE_CHOICE:
+  [ChoiceConstants.REMOVE_CHOICE]: (action) => {
       remove(action.index)
-      break
+  },
 
-    case ChoiceConstants.GET_CHOICES:
+  [ChoiceConstants.GET_CHOICES]: (action) => {
       ChoiceStore.emitChange()
-      break
+  },
 
-    case ChoiceConstants.UPDATE_VALUE:
+  [ChoiceConstants.UPDATE_VALUE]: (action) => {
       updateValue(action.index, action.value)
-      break
   }
-
-  return true
 })
 
 

@@ -74,7 +74,7 @@ class PollForm extends React.Component {
 
   handleSubmit () {
     event.preventDefault();
-    PollActions.add(this.state.title, this.state.choices, this)
+    PollActions.add(this.state.title, this.state.choices, this.context.router)
   }
 
   handleDelete (id) {
